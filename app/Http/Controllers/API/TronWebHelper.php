@@ -15,7 +15,8 @@ class TronWebHelper
      * @return Tron
      * @throws TronException
      */
-    public function makeTronInstance() {
+    public function makeTronInstance(): object
+    {
 
         $fullNode = new \IEXBase\TronAPI\Provider\HttpProvider(self::HOST);
         $solidityNode = new \IEXBase\TronAPI\Provider\HttpProvider(self::HOST);

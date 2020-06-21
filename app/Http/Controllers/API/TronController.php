@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Wallet;
+use IEXBase\TronAPI\Exception\TronException;
+use Illuminate\Http\JsonResponse;
+use function Sodium\add;
 
 class TronController extends Controller
 {
@@ -18,11 +21,14 @@ class TronController extends Controller
         $this->tron = $tron;
     }
 
+
     /**
      * Function to create a new wallet with it address and secret
      *
+     * @return JsonResponse
+     * @throws TronException
      */
-    public function createWallet()
+    public function createWallet(): JsonResponse
     {
         $account = $this->tron->makeTronInstance()->generateAddress();
 
@@ -49,13 +55,32 @@ class TronController extends Controller
 
     }
 
+
     /**
      * Function to show balance of specific wallet
      *
+     * @param string $address
+     * @return JsonResponse
+     * @throws TronException
      */
-    public function getWalletBalance()
+    public function getWalletBalance(string $address): JsonResponse
     {
-        //
-    }
+        $balance = $this->tron->makeTronInstance()->getBalance($address);
 
+        if (isset($balance)) {
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Retrieving wallet balance successfully!',
+                'balance' => $balance
+            ]);
+
+        } else {
+
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Retrieving wallet balance failed!'
+            ]);
+        }
+    }
 }
