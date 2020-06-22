@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Wallet;
 use IEXBase\TronAPI\Exception\TronException;
 use Illuminate\Http\JsonResponse;
-use function Sodium\add;
 
 class TronController extends Controller
 {
